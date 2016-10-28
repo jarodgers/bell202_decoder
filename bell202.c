@@ -92,11 +92,9 @@ int main(void) {
     TIMSK0 |= (1 << TOIE0); // timer overflow interrupt
 
     // configure TMR1
-    // this timer will keep track of the bit period;
-    // will need to have a correction factor; 16 MHz / 1.2 kHz is 13333.3333,
-    // so, we can make it count to 13333 for two periods, and 13334 for one period
+    // this timer will be used to help see if tone has changed between bit periods using a "magic" algorithm
     TCCR1B |=  (1 << WGM12); // CTC mode (clear timer when it reaches value in OCR1A)
-    OCR1A = 13333; // timer value for 1200 Hz (make it 13334 every three bit periods)
+    OCR1A = 13333; // timer value for 1200 Hz bit period, use 20000 for 1.5 bit periods
     TIMSK1 |= (1 << OCIE1A); // interrupt when the timer value matches value in OCR1A
 
     // set up UART for transmission to computer
